@@ -1,8 +1,8 @@
-## 🚀 DSA | Backend | GenAI
+## DSA | Backend | GenAI
 
 This repository contains structured content of topics/problems covered in **DSA**, **Backend Development**, and **Generative AI** batch.
 
-### 📂 Repository Structure
+### Repository Structure
 
 ```text
 ├── DSA
