@@ -1,20 +1,24 @@
 # Data types - sizes and binary connection
-Type	    Size	   Range / Values	Use for
-int	      4 bytes  (32 bits)	−2.1B to +2.1B	Whole numbers - age, count, index
-long long	8 bytes  (64 bits)	−9.2 quintillion to +9.2Q	Very large numbers in DSA
-float	    4 bytes	 ~7 decimal digits precision	Decimal numbers (less precise)
-double	  8 bytes	 ~15 decimal digits precision	Decimal numbers (more precise)
-char	    1 byte   (8 bits)	0–255 (ASCII)	Single character: 'A', '5', '?'
-bool	    1 byte	 true (1) or false (0)	Yes/no conditions
-
+```
+Type	    Size	      Range / Values	                      Use for
+int	        4 bytes       (32 bits)	−2.1B to +2.1B	              Whole numbers - age, count, index
+long long	8 bytes       (64 bits)	−9.2 quintillion to +9.2Q	  Very large numbers in DSA
+float	    4 bytes	      ~7 decimal digits precision	          Decimal numbers (less precise)
+double	    8 bytes	      ~15 decimal digits precision	          Decimal numbers (more precise)
+char	    1 byte        (8 bits)	0–255 (ASCII)	              Single character: 'A', '5', '?'
+bool	    1 byte	      true (1) or false (0)	                  Yes/no conditions
+```
+```
 int age = 20;
 double price = 99.99;
 char grade = 'A';
 bool passed = true;
-
+```
+```
 cout << sizeof(int) << endl;      // 4 bytes
 cout << sizeof(double) << endl;   // 8 bytes
 cout << sizeof(char) << endl;     // 1 byte
+```
 The sizeof() operator tells you how many bytes a type uses. This directly connects to binary — int = 4 bytes = 32 bits = exactly the 2's complement range we calculated.
 
 # Variables, cin/cout, and arithmetic

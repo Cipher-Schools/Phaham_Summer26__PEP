@@ -21,7 +21,7 @@ Selection sort's key property: it makes exactly n–1 swaps — fewer than bubbl
 # Bubble sort
 Compare adjacent elements. If they're in the wrong order, swap them. After each pass, the largest unsorted element "bubbles up" to its correct position at the end. Repeat until no swaps occur.
 Imagine bubbles in a soda glass — light bubbles (small numbers) rise to the top, heavy ones (large numbers) sink to the bottom. Each pass floats the heaviest remaining bubble to its position. The name is literal.
-
+```
 void bubbleSort(int arr[], int n) {
     for (int i = 0; i < n - 1; i++) {
         bool swapped = false;                    // optimization flag
@@ -36,13 +36,13 @@ void bubbleSort(int arr[], int n) {
 }
 // Time:  O(n²) worst/average, O(n) best (already sorted + flag)
 // Space: O(1)
-
+```
 The swapped flag is the key optimization. Without it, bubble sort always runs O(n²) passes. With it, if the array is already sorted, it does one pass, finds no swaps, and stops — making best case O(n). Always include it.
 
 # Insertion sort
 Take the next unsorted element. Insert it into its correct position among the already-sorted elements on the left - by shifting elements right to make room. Like sorting cards in your hand.
 You're dealt cards one by one. After each card, you slide it left into the right position among the cards you're already holding. Your left hand always has a sorted set. Each new card gets inserted into it. This is exactly insertion sort — and it's how humans naturally sort cards.
-
+```
 void insertionSort(int arr[], int n) {
     for (int i = 1; i < n; i++) {
         int key = arr[i];        // the card we're inserting
@@ -56,5 +56,4 @@ void insertionSort(int arr[], int n) {
 }
 // Time:  O(n²) worst, O(n) best (nearly sorted array!)
 // Space: O(1) - in-place
-Insertion sort's superpower: it's O(n) on nearly-sorted data. Real-world data is often almost sorted (logs, scores that change slightly each day). That's why TimSort (Python's and Java's built-in sort) uses insertion sort for small subarrays. It's not just a teaching algorithm.
-When to use which sorting algorithm.
+```
