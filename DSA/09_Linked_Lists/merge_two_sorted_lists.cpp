@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// Iterative
 ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
     ListNode dummy(0); ListNode* curr = &dummy;
     while (l1 && l2) {
@@ -14,3 +15,5 @@ ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
     return dummy.next;
 }
 // Time O(m+n), Space O(1) — no new nodes created, just relinking pointers
+
+// Recursive
