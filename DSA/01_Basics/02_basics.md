@@ -83,7 +83,7 @@ for (int i = 1; i <= 10; i++) {
 // for (initialization; condition; update)
 //      ↑ int i=1        ↑ i<=10      ↑ i++
 
-- while loop — when you don't know how many times
+- while loop - when you don't know how many times
 Use when you repeat "until something happens": "keep asking until valid input", "keep running until user quits".
 int n;
 cout << "Enter a positive number: ";
@@ -94,7 +94,7 @@ while (n <= 0) {           // keep asking as long as input is invalid
     cin >> n;
 }
 
-# Arrays — your first data structure
+# Arrays - your first data structure
 An array is a collection of items of the same type, stored in consecutive memory locations. Think of it like a row of numbered lockers - all lockers are the same size, and you access each one by its number (index).
 Analogy: A train with numbered coaches - Coach 0, Coach 1, Coach 2... Each coach holds one item. You jump directly to any coach by its number. That's O(1) access — instant.
 
@@ -122,12 +122,15 @@ Important: Arrays start at index 0, not 1. An array of size 5 has indices 0 to 4
 ```
 # Time Complexity - Big O notation
 Big O tells you how the number of steps your algorithm takes grows as the input size (n) grows. It's the language of comparing algorithms without worrying about hardware.
-
-O(1) - Constant — best!
+```
+O(1) - Constant - best!
 O(log n) - Logarithmic — great
-O(n) - Linear — acceptable
-O(n²) - Quadratic — slow
-O(2ⁿ) - Exponential — avoid
+O(n) - Linear - acceptable
+O(n²) - Quadratic - slow
+O(2ⁿ) - Exponential - avoid
+
+nⁿ > n! > 2ⁿ > n^3 > n² > nlogn > n > logn > 1
+```
 
 # Space Complexity - memory cost
 Time complexity = how long does it take. Space complexity = how much memory does it use. Both matter. Sometimes you trade one for the other - using more memory to make things faster (caching).
