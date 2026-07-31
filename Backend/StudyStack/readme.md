@@ -1,5 +1,6 @@
 #### Project Structure - 
 
+```
 StudyStack/
 │
 ├── config/
@@ -27,3 +28,4 @@ StudyStack/
 ├── server.js
 ├── package.json
 └── README.md
+```
