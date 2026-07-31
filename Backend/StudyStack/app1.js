@@ -5,8 +5,14 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 const mongoose = require('mongoose');
+const { PassThrough } = require('stream');
+// const { bcrypt } = require('bcryptjs');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
 require('dotenv').config();
 
+app.use(express.json());
 
 const connectDB = async () => {
   try {
@@ -39,8 +45,43 @@ const courseSchema = new mongoose.Schema({
     required: true
   }
 })
-
 const Course = mongoose.model("Course", courseSchema, "Courses");
+
+// user schema
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true
+  },
+  password: {
+    type: String,
+    required: true,
+    minength: 8
+  },
+  role: {
+    type: String,
+    enum: ['student', 'instructor'],
+    default: 'student'
+  }
+})
+
+userSchema.pre('save', async function (next) {
+  if (this.isModified('password')) return next();
+  this.password = bcrypt.hash(this.password, 10);
+  next();
+})
+
+userSchema.methods.comparePassword = async (userPassword) => {
+  return bcrypt.compare(userPassword, this.password);
+}
+
+const User = mongoose.model("User", userSchema, "Users");
 
 // seed data to database
 // const filepath = path.join(__dirname, "./data/data.json")
@@ -56,21 +97,69 @@ const Course = mongoose.model("Course", courseSchema, "Courses");
 // seedData();
 
 
-
-// CREATE
-app.post('/api/courses', async (req, res) => {
+// ------------------------- User APIs --------------------------------
+// CREATE USER
+app.post('/api/users', async (req, res) => {
   try {
-    const course = await Course.create(req.body);
-    res.status(200).json(course);
+    const user = await User.create(req.body);
+    res.status(201).json(user);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 })
 
-// GET
+// GET ALL USERS
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+})
+
+// GET SINGLE USER 
+app.get('/api/users/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ error: "Course not found" });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+})
+
+// DELETE USER 
+app.delete('/api/users/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+})
+
+// UPDATE USER 
+app.put('/api/users/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+})
+
+// ------------------------- Courses APIs -----------------------------
+
+// GET ALL COURSES
 app.get('/api/courses', async (req, res) => {
   try {
-    const filter = req.query.instructor ? { instructor: req.query.instructor } : {};
+    // const filter = req.query.instructor ? { instructor: req.query.instructor } : {};
     const courses = await Course.find();
     // const courses = await Course.find(filter);
     res.json(courses);
@@ -79,42 +168,136 @@ app.get('/api/courses', async (req, res) => {
   }
 })
 
-// GET ONE
+// GET ONE COURSE
 app.get('/api/courses/:id', async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
-    if(!course) return res.status(404).json({error: "Course not found"});
-    // const courses = await Course.find(filter);
-    res.json(courses);
+    if (!course) return res.status(404).json({ error: "Course not found" });
+    res.json(course);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 })
-// DELETE
-app.get('/api/courses/:id', async (req, res) => {
+
+// CREATE COURSE
+app.post('/api/courses', async (req, res) => {
+  try {
+    const course = await Course.create(req.body);
+    res.status(201).json(course);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+})
+
+// DELETE COURSE
+app.delete('/api/courses/:id', async (req, res) => {
   try {
     const course = await Course.findByIdAndDelete(req.params.id);
-    if(!course) return res.status(404).json({error: "Course not found"});
-    // const courses = await Course.find(filter);
-    res.json(courses);
+    if (!course) return res.status(404).json({ error: "Course not found" });
+    res.json(course);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 })
-// UPDATE
-app.get('/api/courses/:id', async (req, res) => {
+// UPDATE COURSE
+app.put('/api/courses/:id', async (req, res) => {
   try {
-    const course = await Course.findByIdAndUpdate(req.params.id);
-    if(!course) return res.status(404).json({error: "Course not found"});
-    // const courses = await Course.find(filter);
-    res.json(courses);
+    // findByIdAndUpdate(id, updateData, options)
+    const course = await Course.findByIdAndUpdate(req.params.id, req.body,
+      {
+        new: true,
+        runValidators: true
+      });
+    if (!course) return res.status(404).json({ error: "Course not found" });
+    res.json(course);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 })
 
 
+// Authentication
+const PasswordCompare = async () => {
+  const hashedPassword = await bcrypt.hash('Pass@123', 10);
 
+  const isMatch = await bcrypt.compare('Pass@123', hashedPassword);
+  console.log('Correct Pwd', isMatch);
+  const isMatch2 = await bcrypt.compare('Google@123', hashedPassword);
+  console.log('Wrong Pwd', isMatch2);
+}
+
+PasswordCompare();
+
+// jwt
+// const token = jwt.sign({
+//   id: user._id, 
+//   role: user.role
+// }, process.env.JWT_SECRET, {
+//   expiresIn: '1d'
+// });
+
+
+// const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+
+app.post('/register', async (req, res) => {
+  try {
+    const user = await User.create(req.body);
+    const token = jwt.sign({
+      id: user._id,
+      role: user.role
+    }, process.env.JWT_SECRET, {
+      expiresIn: '1d'
+    });
+    res.status(201).json({token, user: {id: user._id, name: user.name, email: user.email, role: user.role}});
+
+  } catch (err) {
+    res.status(500).json(err, { error: "Someting went Wrong" })
+  }
+})
+
+app.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    const isMatch = user.comparePassword(password);
+    if (!isMatch) return res.status(401).json({ error: "Invalid Credentials" });
+    const token = jwt.sign({
+      id: user._id,
+      role: user.role
+    }, process.env.JWT_SECRET, {
+      expiresIn: '1d'
+    });
+    res.status(200).json({token, user: {id: user._id, name: user.name, email: user.email, role: user.role}});
+  } catch (err) {
+      res.status(500).json({ error: "Someting went Wrong" })
+  }
+})
+
+
+
+const protect = async(req, res, next)=>{
+  const authHeader = req.headers.authorization;
+  if(!authHeader || !authHeader.startsWith('bearer')){
+    res.status(401).json({ error: "No bearer token passed" })
+  }
+  try{
+    const token = authHeader.split(' ');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    req.user = decoded;
+    next();
+  }catch(err){
+    res.status(500).json({ error: "Someting went Wrong" })
+  }
+}
+
+const requireInstructor = async(req, res, next)=>{
+  if(req.user.role !== "instructor"){
+    res.status(403).json({ error: "Instructor only" })
+  }
+  next();
+}
 
 app.get('/', (req, res) => {
   res.send("Welcome to the study stack api");
