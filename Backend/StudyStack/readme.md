@@ -6,6 +6,9 @@ Structured Express + MongoDB backend with:
 - User CRUD APIs
 - Register/Login authentication with JWT
 
+## Deployed on render - 
+- https://studystack-4nix.onrender.com
+
 ## Project Structure
 
 ```
