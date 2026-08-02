@@ -6,7 +6,7 @@ const {
   updateCourse,
   deleteCourse
 } = require('../controllers/courseController');
-const { protect, requireInstructor } = require('../middleware/auth');
+const { protect, requireInstructor } = require('../middlewares/auth');
 
 const router = express.Router();
 
