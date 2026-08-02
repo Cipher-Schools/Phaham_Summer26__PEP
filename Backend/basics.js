@@ -101,6 +101,9 @@ const user1 = {
   "id": 100,
   "name": "John"
 }
+
+// JSON.stringify(value, replacer, space)
+
 const objtoStr = JSON.stringify(user1);
 console.log(objtoStr);
 
@@ -160,6 +163,18 @@ const courses = {
 }
 
 console.log(`Course ${courses.title} has price ${courses.price}`);
+
+
+// const newCourse = {...courses, "price": 599}
+// console.log(newCourse);
+
+// function SUM(...arr){
+//   arr.reduce((acc, currValue)=>{
+//     return acc + currValue;
+//   })
+// }
+
+// SUM(10, 20, 30, 40);
 
 // Destructuring
 const {title, price} = courses;
