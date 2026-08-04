@@ -168,10 +168,10 @@ const indexChunks = async(chunks)=>{
 
 // search - return similar chunks
 const search = async(query, topK)=>{
-  const userQueryEmbeddig = generateEmbedding(query);
+  const userQueryEmbedding = generateEmbedding(query);
   const scores = store.map(item=>({
     chunk: item.chunk,
-    score: cosineSimilarity(userQueryEmbeddig, item.embedding)
+    score: cosineSimilarity(userQueryEmbedding, item.embedding)
   }))
   score.sort((a, b)=>b.score  - a.score);
   return scores.slice(0, topK);
