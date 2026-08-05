@@ -1,4 +1,4 @@
-# Generative AI Basics - Complete Notes
+# Generative AI Basics
 
 # 1. Introduction to AI
 
