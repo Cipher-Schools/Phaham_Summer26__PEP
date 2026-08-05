@@ -1,75 +1,38 @@
 require('dotenv').config();
 
-// const chat = async () => {
-//   // const response = await fetch("https://api.openai.com/v1/chat/completions", {
-//   const response = await fetch("https://api.x.ai/v1/chat/completions", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "Authorization": `Bearer ${process.env.GROK_API_KEY}`
-//     },
-//     body: JSON.stringify({
-//       model: "grok-4.5",
-//       messages: [
-//         {
-//           role: "system",
-//           content:
-//             "You are a helpful assistant for an e-learning platform called StudyStack."
-//         },
-//         {
-//           role: "user",
-//           content:
-//             "Suggest 3 beginner course topics for a Node.js curriculum"
-//         }
-//       ]
-//     })
-//   });
+const chat = async () => {
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                text: "Suggest 3 beginner course topics for a Node.js curriculum."
+              }
+            ]
+          }
+        ]
+      })
+    }
+  );
 
-//   const data = await response.json();
+  const data = await response.json();
 
-//   if (!response.ok) {
-//     console.error(data);
-//     return;
-//   }
+  if (!response.ok) {
+    console.error(data);
+    return;
+  }
 
-//   console.log(data.choices[0].message.content);
-// };
+  console.log(data.candidates[0].content.parts[0].text);
+};
 
-// ------------------------------------------------------------
-
-// const chat = async () => {
-//   const response = await fetch(
-//     `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-//     {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify({
-//         contents: [
-//           {
-//             parts: [
-//               {
-//                 text: "Suggest 3 beginner course topics for a Node.js curriculum."
-//               }
-//             ]
-//           }
-//         ]
-//       })
-//     }
-//   );
-
-//   const data = await response.json();
-
-//   if (!response.ok) {
-//     console.error(data);
-//     return;
-//   }
-
-//   console.log(data.candidates[0].content.parts[0].text);
-// };
-
-// chat();
+chat();
 
 
 
