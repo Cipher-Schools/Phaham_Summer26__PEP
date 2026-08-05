@@ -81,7 +81,7 @@ GenAI_Project/
 
 **Retrieval** - the top-k (e.g. 3) most similar chunks to the question are pulled out and used as context.
 
-**Grounded generation** - the LLM is explicitly instructed to answer *only* from the retrieved context, and to say so honestly if the answer isn't in there — instead of falling back on its own possibly-wrong general knowledge.
+**Grounded generation** - the LLM is explicitly instructed to answer *only* from the retrieved context, and to say so honestly if the answer isn't in there - instead of falling back on its own possibly-wrong general knowledge.
 
 ---
 
