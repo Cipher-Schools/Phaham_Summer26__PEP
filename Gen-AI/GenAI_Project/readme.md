@@ -2,7 +2,7 @@
 
 A lightweight Retrieval-Augmented Generation (RAG) chatbot that answers questions grounded in the content of a PDF document.
 
-Instead of relying on an LLM's general training knowledge (which can be outdated or simply wrong for your specific document), this project **retrieves the most relevant chunks of the actual PDF** and hands them to the LLM as context before it answers. This keeps responses accurate, current, and traceable back to a real source — directly solving the hallucination problem covered on Day 1.
+Instead of relying on an LLM's general training knowledge (which can be outdated or simply wrong for your specific document), this project **retrieves the most relevant chunks of the actual PDF** and hands them to the LLM as context before it answers. This keeps responses accurate, current, and traceable back to a real source - directly solving the hallucination problem covered on Day 1.
 
 - ### What This Project Actually Does - A Mind Map: 
 ```
